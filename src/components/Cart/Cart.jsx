@@ -4,10 +4,11 @@ import Modal from '../UI/Modal';
 import CartItem from './CartItem';
 import classes from './Cart.module.css';
 import CartContext from '../../store/cart-context';
+import { useSelector } from 'react-redux';
 
 const Cart = (props) => {
   const cartCtx = useContext(CartContext);
-
+  const { addedMeals, isLoading, error } = useSelector((state) => state.basket);
   const totalAmount = `$${cartCtx.totalAmount.toFixed(2)}`;
   const hasItems = cartCtx.items.length > 0;
 
@@ -16,12 +17,12 @@ const Cart = (props) => {
   };
 
   const cartItemAddHandler = (item) => {
-    cartCtx.addItem({...item, amount: 1});
+    cartCtx.addItem({ ...item, amount: 1 });
   };
 
   const cartItems = (
     <ul className={classes['cart-items']}>
-      {cartCtx.items.map((item) => (
+      {addedMeals.map((item) => (
         <CartItem
           key={item.id}
           name={item.name}

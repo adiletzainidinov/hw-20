@@ -1,6 +1,9 @@
 import Card from '../UI/Card';
 import MealItem from './MealItem/MealItem';
 import classes from './AvailableMeals.module.css';
+import { useDispatch } from 'react-redux';
+import { addBasketThunk } from '../../redux/actions/basketActions';
+
 
 const DUMMY_MEALS = [
   {
@@ -30,6 +33,11 @@ const DUMMY_MEALS = [
 ];
 
 const AvailableMeals = () => {
+  const dispatch = useDispatch()
+
+  function onAddToBasket(newMeal) {
+    dispatch(addBasketThunk(newMeal))
+  }
   const mealsList = DUMMY_MEALS.map((meal) => (
     <MealItem
       key={meal.id}
@@ -37,6 +45,7 @@ const AvailableMeals = () => {
       name={meal.name}
       description={meal.description}
       price={meal.price}
+      onAddToBasket={onAddToBasket}
     />
   ));
 
