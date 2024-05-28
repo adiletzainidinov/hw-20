@@ -8,23 +8,30 @@ const initialState = {
 };
 
 export const basketReducer = (state = initialState, action) => {
-  if (action.type === basketActionsType.LOADING) {
-    return { ...state, isLoading: true };
+  switch (action.type) {
+    case basketActionsType.LOADING:
+      return { ...state, isLoading: true };
+    case basketActionsType.ADD:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        addedMeals: action.payload,
+      };
+    case basketActionsType.REMOVE:
+      return {
+        ...state,
+        isLoading: false,
+        error: null,
+        addedMeals: state.addedMeals.filter(meal => meal.id !== action.payload),
+      };
+    case basketActionsType.ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
   }
-  if (action.type === basketActionsType.ADD) {
-    return {
-      ...state,
-      isLoading: false,
-      error: null,
-      addedMeals: action.payload,
-    };
-  }
-  if (action.type === basketActionsType.ERROR) {
-    return {
-      ...state,
-      isLoading: false,
-      error: action.payload,
-    };
-  }
-  return state;
 };

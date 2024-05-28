@@ -1,7 +1,26 @@
+import { useDispatch } from 'react-redux';
+import { addBasketThunk, removeBasketThunk } from '../../redux/actions/basketActions';
 import classes from './CartItem.module.css';
 
 const CartItem = (props) => {
-  const price = `$${props.price.toFixed(2)}`;
+  const dispatch = useDispatch();
+
+  // Убедимся, что price - число и установим значение по умолчанию, если оно undefined
+  const price = props.price ? `$${props.price.toFixed(2)}` : '$0.00';
+
+  const addItemHandler = () => {
+    const newMeal = {
+      id: props.id,
+      name: props.name,
+      amount: 1,  // Поскольку мы добавляем один элемент
+      price: props.price,
+    };
+    dispatch(addBasketThunk(newMeal));
+  };
+
+  const removeItemHandler = () => {
+    dispatch(removeBasketThunk(props.id));
+  };
 
   return (
     <li className={classes['cart-item']}>
@@ -13,8 +32,8 @@ const CartItem = (props) => {
         </div>
       </div>
       <div className={classes.actions}>
-        <button onClick={props.onRemove}>−</button>
-        <button onClick={props.onAdd}>+</button>
+        <button onClick={removeItemHandler}>−</button>
+        <button onClick={addItemHandler}>+</button>
       </div>
     </li>
   );
