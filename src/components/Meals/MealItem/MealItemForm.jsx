@@ -2,10 +2,13 @@ import { useRef, useState } from 'react';
 
 import Input from '../../UI/Input';
 import classes from './MealItemForm.module.css';
+import { useSelector } from 'react-redux';
+import Spinner from '../../Layout/Spinner';
 
 const MealItemForm = (props) => {
   const [amountIsValid, setAmountIsValid] = useState(true);
   const amountInputRef = useRef();
+  const { addedMeals, isLoading, error } = useSelector((state) => state.basket);
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -29,7 +32,7 @@ const MealItemForm = (props) => {
     <form className={classes.form} onSubmit={submitHandler}>
       <Input
         ref={amountInputRef}
-        label='Amount'
+        label="Amount"
         input={{
           id: 'amount_' + props.id,
           type: 'number',
@@ -39,7 +42,7 @@ const MealItemForm = (props) => {
           defaultValue: '1',
         }}
       />
-      <button>+ Add</button>
+      <button>{isLoading ? <Spinner /> : '+ Add'}</button>
       {!amountIsValid && <p>Please enter a valid amount (1-5).</p>}
     </form>
   );

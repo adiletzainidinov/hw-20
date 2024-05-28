@@ -6,7 +6,6 @@ const initialState = {
   isLoading: false,
   error: null,
 };
-
 export const basketReducer = (state = initialState, action) => {
   switch (action.type) {
     case basketActionsType.LOADING:

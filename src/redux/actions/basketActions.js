@@ -1,14 +1,12 @@
 const BASKET_URL = 'https://basket-9f781-default-rtdb.firebaseio.com/basket';
 
-// Действия
 export const basketActionsType = {
   ADD: 'ADD_TO_BASKET',
-  REMOVE: 'REMOVE_FROM_BASKET',
   ERROR: 'ERROR',
   LOADING: 'LOADING',
+  REMOVE: 'REMOVE_FROM_BASKET',
 };
 
-// Успешное добавление блюд в корзину
 const getBasketMealsSuccess = (response) => {
   return {
     type: basketActionsType.ADD,
@@ -16,21 +14,18 @@ const getBasketMealsSuccess = (response) => {
   };
 };
 
-// Ошибка при получении/добавлении блюд
 const getBasketMealsFailed = (error) => {
   return { type: basketActionsType.ERROR, payload: error };
 };
 
-// Загрузка блюд
-const getbasketMealsPending = () => {
+const getBasketMealsPending = () => {
   return { type: basketActionsType.LOADING };
 };
 
-// Получение блюд из корзины
 export const getBasketMealsThunk = () => {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
-      dispatch(getbasketMealsPending());
+      dispatch(getBasketMealsPending());
       const data = await fetch(`${BASKET_URL}.json`);
       const response = await data.json();
       const exchangeResponseToArray = [];
@@ -49,11 +44,10 @@ export const getBasketMealsThunk = () => {
   };
 };
 
-// Добавление блюда в корзину
 export const addBasketThunk = (newMeal) => {
   return async (dispatch) => {
     try {
-      dispatch(getbasketMealsPending());
+      dispatch(getBasketMealsPending());
       await fetch(`${BASKET_URL}.json`, {
         method: 'POST',
         headers: {
@@ -68,7 +62,6 @@ export const addBasketThunk = (newMeal) => {
   };
 };
 
-// Успешное удаление блюда из корзины
 const deleteBasketMealSuccess = (id) => {
   return {
     type: basketActionsType.REMOVE,
@@ -76,11 +69,10 @@ const deleteBasketMealSuccess = (id) => {
   };
 };
 
-// Удаление блюда из корзины
 export const removeBasketThunk = (id) => {
   return async (dispatch) => {
     try {
-      dispatch(getbasketMealsPending());
+      dispatch(getBasketMealsPending());
       await fetch(`${BASKET_URL}/${id}.json`, {
         method: 'DELETE',
       });
